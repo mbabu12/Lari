@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">#container {height:100%;width:100%;position:absolute;}</style>
+    <script src="jquery.js"></script>
+    <script src="highstock.js"></script>
+    <title>Nextep - Lari</title>
+  </head>
+  <body style="margin:0;padding:0">
+  <div id="container"></div>
+
+	<script>
+		var loadChart = function (data) {
+		
+		
+		$('#container').highcharts('StockChart', {
+			chart: {
+                margin: [10,0,30,5]
+            },
+			title: {
+				text: data[0].name
+			},
+			xAxis: {
+				gapGridLineWidth: 0
+			},
+			navigator: {
+				enabled: false
+			},
+			tooltip: {
+				formatter: function() {
+					var s = '<b>'+ Highcharts.dateFormat('%e %b %Y', this.x) +'</b>';
+
+					$.each(this.points, function(i, point) {
+						s += '<br/>' + point.y +' GEL';
+					});
+				
+					return s;
+				}
+			},
+			rangeSelector : {
+				buttons: [{
+					type: 'month',
+					count: 1,
+					text: '1m'
+				}, {
+					type: 'month',
+					count: 3,
+					text: '3m'
+				}, {
+					type: 'month',
+					count: 6,
+					text: '6m'
+				}, {
+					type: 'all',
+					text: 'All'
+				}],
+				selected: 3,
+				inputEnabled : false
+			},
+			scrollbar: {
+				enabled: false
+			},
+			series : [{
+				name : data[0].name,
+				type: 'area',
+				data : data[0].data,
+				gapSize: 5,
+				tooltip: {
+					valueDecimals: 2
+				},
+				fillColor : {
+					linearGradient : {
+						x1: 0, 
+						y1: 0, 
+						x2: 0, 
+						y2: 1
+					},
+					stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
+				},
+				threshold: null
+			}]
+		});
+    };
+	loadChart(1);
+</script>
+  </body>
+</html>
